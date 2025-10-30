@@ -36,4 +36,4 @@ WORKDIR /home/ubuntu
 EXPOSE 7681
 
 # Start ttyd on port 7681 with bash shell
-CMD ["ttyd", "-p", "7681", "bash"]
+CMD ["ttyd", "-p", "7681", "--writable", "bash"]
