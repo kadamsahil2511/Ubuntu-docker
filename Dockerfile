@@ -1,21 +1,19 @@
 # Use Ubuntu as the base image
 FROM ubuntu:latest
 
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install necessary packages and dependencies and clean up apt cache
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
-    sudo \
     git \
     build-essential \
     cmake \
     libjson-c-dev \
     libwebsockets-dev \
     && rm -rf /var/lib/apt/lists/*
-
-# The 'ubuntu' user already exists in the base image.
-# Grant passwordless sudo privileges to the existing 'ubuntu' user.
-RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Install ttyd (web-based terminal)
 RUN git clone https://github.com/tsl0922/ttyd.git && \
@@ -28,7 +26,7 @@ RUN git clone https://github.com/tsl0922/ttyd.git && \
     cd / && \
     rm -rf /ttyd
 
-# Switch to the ubuntu user
+# Switch to the ubuntu user (safe runtime user)
 USER ubuntu
 WORKDIR /home/ubuntu
 
